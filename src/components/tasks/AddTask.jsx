@@ -1,5 +1,7 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment } from "react";
+import { useDispatch } from "react-redux";
+import { addTask } from "../../Store/Slices/TaskSlice";
 
 const AddTask = ({ isOpen, setIsOpen }) => {
 
@@ -8,9 +10,17 @@ const AddTask = ({ isOpen, setIsOpen }) => {
         setIsOpen(false)
     }
 
+    const dispatch = useDispatch()
 
     const handleSubmit = (e) => {
         e.preventDefault()
+        const form = e.target
+        const task_name = form.name.value
+        const description = form.description.value
+        const task_obj = { title: task_name, description: description }
+       
+        dispatch(addTask(task_obj))
+
     }
 
     return (
@@ -49,22 +59,26 @@ const AddTask = ({ isOpen, setIsOpen }) => {
                                     >
                                         Payment successful
                                     </Dialog.Title>
-                                    <div className="mt-2">
-                                        <input className="w-full" type="text" placeholder="Task Name" name="" id="" />
-                                    </div>
-                                    <div className="mt-2">
-                                        <input className="w-full" type="text" placeholder="Description" name="" id="" />
-                                    </div>
+                                    <form onSubmit={handleSubmit}>
 
-                                    <div className="mt-4">
-                                        <button
-                                            type="button"
-                                            className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                                            onClick={closeModal}
-                                        >
-                                            Add task
-                                        </button>
-                                    </div>
+                                        <div className="mt-2">
+                                            <input className="w-full" type="text" placeholder="Task Name" name="name" id="" />
+                                        </div>
+                                        <div className="mt-2">
+                                            <input className="w-full" type="text" placeholder="description" name="description" id="" />
+                                        </div>
+
+                                        <div className="mt-4">
+                                            <button
+                                                type="submit"
+                                                className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                                                onClick={closeModal}
+                                            >
+                                                Add task
+                                            </button>
+                                        </div>
+
+                                    </form>
                                 </Dialog.Panel>
                             </Transition.Child>
                         </div>

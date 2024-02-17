@@ -3,11 +3,15 @@ import MyTasks from "../components/tasks/MyTasks";
 import TaskCard from "../components/tasks/TaskCard";
 import { BellIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
 const Tasks = () => {
 
   const [isOpen, setIsopen] = useState(false)
+  const { tasks } = useSelector((state) => state.task)
 
+  const pendingTask = tasks.filter(task => task.status === "pending")
+  const runingTask = tasks.filter(task => task.status === "running")
   return (
     <div className="h-screen grid grid-cols-12">
       <div className="col-span-9 px-10 pt-10">
@@ -42,7 +46,9 @@ const Tasks = () => {
               </p>
             </div>
             <div className="space-y-3">
-              <TaskCard />
+              {
+                pendingTask?.map(item => <TaskCard key={item.id} task={item} />)
+              }
             </div>
           </div>
           <div className="relative h-[800px] overflow-auto">
@@ -53,8 +59,10 @@ const Tasks = () => {
               </p>
             </div>
             <div className="space-y-3">
-              <TaskCard />
-              <TaskCard />
+              {
+                runingTask?.map(item => <TaskCard key={item.id} task={item} />)
+              }
+
             </div>
           </div>
           <div className="relative h-[800px] overflow-auto">
@@ -65,7 +73,9 @@ const Tasks = () => {
               </p>
             </div>
             <div className="space-y-3">
-              <TaskCard />
+              {
+                runingTask?.map(item => <TaskCard key={item.id} task={item} />)
+              }
             </div>
           </div>
         </div>
